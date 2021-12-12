@@ -17,57 +17,52 @@ import java.util.List;
 @RequestMapping("/api")
 public class ProductController {
 
-    final static Logger logger = Logger.getLogger(FileReader.class);
 
     @Autowired
     private ProductService productService;
 
 
-
     @GetMapping("/products")
-    public List<Product> getAllProduct(){
-   List<Product> productList = productService.getAllProduct();
-   return productList;
+    public List<Product> getAllProduct() {
+        List<Product> productList = productService.getAllProduct();
+        return productList;
     }
 
-    //get product by Id. If Id not exist return empty page with status 404
-
+    //get product by Id. If Id not exist return page with status 404
     @GetMapping("/products/{id}")
-public ResponseEntity<Product> getProduct(@PathVariable Long id){
+    public ResponseEntity<Product> getProduct(@PathVariable Long id) {
         Product product = productService.getProduct(id);
         HttpStatus status = product != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
-
         return new ResponseEntity<Product>(product, status);
     }
 
+    //save to database new product with validation field name, price,
+    // dateOfCreation(pattern), dateOfModification(pattern)
     @PostMapping("/products")
-
-    public ResponseEntity addNewProduct(@Valid @RequestBody Product product, BindingResult bindingResult){
-        if(bindingResult.hasErrors()) {
-        return ResponseEntity.badRequest().body("Ошибка валидации");
+    public ResponseEntity addNewProduct(@Valid @RequestBody Product product, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body("Ошибка валидации");
         }
         productService.saveProduct(product);
-return ResponseEntity.ok("New product saved");
+        return ResponseEntity.ok("New product saved");
     }
 
-
+    //update existing entity with validation
     @PutMapping("/products")
-public ResponseEntity updateProduct(@Valid@RequestBody Product product, BindingResult bindingResult){
-        if(bindingResult.hasErrors()) {
+    public ResponseEntity updateProduct(@Valid @RequestBody Product product, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body("Ошибка валидации");
         }
         productService.saveProduct(product);
         return ResponseEntity.ok("Product update");
     }
 
+    //delete entity by id
     @DeleteMapping("/products/{id}")
-public String deleteProduct(@PathVariable Long id){
+    public String deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return "Product with id = " + id + " was deleted";
     }
-
-
-
 
 
 }

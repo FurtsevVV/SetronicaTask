@@ -6,13 +6,13 @@ import javax.persistence.*;
 @Table(name = "languagemap")
 public class CurrencyLanguageMap {
 
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-@Column(name = "language_id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "language_id")
     private Long id;
-@Column(name="currency")
+    @Column(name = "currency")
     private String currency;
-@Column(name = "languages")
+    @Column(name = "languages")
     private String language;
 
     public CurrencyLanguageMap() {

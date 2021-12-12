@@ -2,3 +2,4 @@
 2021-12-11 08:28:09 INFO  [http-nio-8080-exec-1]: Server work
 2021-12-11 08:28:14 INFO  [http-nio-8080-exec-4]: Server work
 2021-12-11 10:08:04 INFO  [http-nio-8080-exec-4]: Server work
+2021-12-12 17:52:56 ERROR [http-nio-8080-exec-1]: Logger: No Product with name=dfgdf in database, or currency and language this product not defined

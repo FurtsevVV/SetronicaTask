@@ -3,6 +3,8 @@ package com.zakat.stask.service;
 import com.zakat.stask.entity.Product;
 import com.zakat.stask.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +15,7 @@ import java.util.Optional;
 public class ProductService implements ProductServiceInterface {
 
     @Autowired
-private ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     @Override
 
@@ -32,28 +34,28 @@ private ProductRepository productRepository;
 
     public Product getProduct(Long id) {
         Product prod = null;
-Optional<Product> opt = productRepository.findById(id);
-if(opt.isPresent()){
-    prod=opt.get();
-}
-    return prod;
+        Optional<Product> opt = productRepository.findById(id);
+        if (opt.isPresent()) {
+            prod = opt.get();
+        }
+        return prod;
     }
 
     @Override
 
     public void deleteProduct(Long id) {
-productRepository.deleteById(id);
+        productRepository.deleteById(id);
     }
 
     @Override
     public List<Product> getProductsByName(String name) {
-       return productRepository.findProductsByNameAndLanguageMapNotNull(name);
+        return productRepository.findProductsByNameAndLanguageMapNotNull(name);
 
     }
 
     @Override
-    public List<Product> getAllProductWithLanguageAndCurrency() {
-        return productRepository.findProductsByLanguageMapIsNotNull();
+    public Page<Product> getAllProductWithLanguageAndCurrency(Pageable pageable) {
+        return productRepository.findProductsByLanguageMapIsNotNull(pageable);
     }
 
     @Override
