@@ -1,17 +1,18 @@
 package com.zakat.stask.repository;
 
 import com.zakat.stask.entity.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface ProductRepository  {
+public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
- public    List<Product> getAllProduct();
+   public List<Product> findProductsByNameAndLanguageMapNotNull(String name);
 
- public void saveProduct(Product product);
+    public List<Product> findProductsByLanguageMapIsNotNull();
 
- public Product getProduct(Long id);
- public void deleteProduct(Long id);
+    public Product findByIdAndLanguageMapIsNotNull(Long id);
+
 }

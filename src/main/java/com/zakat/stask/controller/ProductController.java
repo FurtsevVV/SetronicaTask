@@ -4,9 +4,12 @@ import com.zakat.stask.entity.Product;
 import com.zakat.stask.service.ProductService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.FileReader;
 import java.util.List;
 
@@ -19,19 +22,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-//    @GetMapping
-//public ResponseEntity getProduct(){
-//    try{
-//        logger.info("Server work");
-//
-//        return ResponseEntity.ok("Server Workong");
-//    } catch (Exception e){
-//        logger.error("Error request in method getProduct");
-//
-//        return ResponseEntity.badRequest().body("Error Request");
-//
-//    }
-//}
+
 
     @GetMapping("/products")
     public List<Product> getAllProduct(){
@@ -39,22 +30,34 @@ public class ProductController {
    return productList;
     }
 
+    //get product by Id. If Id not exist return empty page with status 404
+
     @GetMapping("/products/{id}")
-public Product getProduct(@PathVariable Long id){
+public ResponseEntity<Product> getProduct(@PathVariable Long id){
         Product product = productService.getProduct(id);
-        return product;
+        HttpStatus status = product != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+
+        return new ResponseEntity<Product>(product, status);
     }
 
     @PostMapping("/products")
-    public Product addNewProduct(@RequestBody Product product){
+
+    public ResponseEntity addNewProduct(@Valid @RequestBody Product product, BindingResult bindingResult){
+        if(bindingResult.hasErrors()) {
+        return ResponseEntity.badRequest().body("Ошибка валидации");
+        }
         productService.saveProduct(product);
-        return product;
+return ResponseEntity.ok("New product saved");
     }
 
+
     @PutMapping("/products")
-public Product updateProduct(@RequestBody Product product){
+public ResponseEntity updateProduct(@Valid@RequestBody Product product, BindingResult bindingResult){
+        if(bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body("Ошибка валидации");
+        }
         productService.saveProduct(product);
-        return product;
+        return ResponseEntity.ok("Product update");
     }
 
     @DeleteMapping("/products/{id}")
@@ -64,16 +67,7 @@ public String deleteProduct(@PathVariable Long id){
     }
 
 
-//    @GetMapping
-//    public ResponseEntity getOneUser(@RequestParam Long id) {
-//        try {
-//            return ResponseEntity.ok(userService.getOne(id));
-//        } catch (UserNotFoundException e) {
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().body("Произошла ошибка");
-//        }
-//    }
+
 
 
 }

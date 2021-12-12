@@ -13,4 +13,10 @@ public interface ProductServiceInterface {
    public Product getProduct(Long id);
 
    public void deleteProduct(Long id);
+
+   public List<Product> getProductsByName(String name);
+
+  public List<Product> getAllProductWithLanguageAndCurrency();
+
+   public Product getProductsById(Long id);
 }

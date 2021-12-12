@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService implements ProductServiceInterface {
@@ -15,29 +16,49 @@ public class ProductService implements ProductServiceInterface {
 private ProductRepository productRepository;
 
     @Override
-    @Transactional
+
     public List<Product> getAllProduct() {
-        return productRepository.getAllProduct();
+        return productRepository.findAll();
     }
 
     @Override
-    @Transactional
+
     public void saveProduct(Product product) {
 
-        productRepository.saveProduct(product);
+        productRepository.save(product);
     }
 
     @Override
-    @Transactional
+
     public Product getProduct(Long id) {
-Product prod = productRepository.getProduct(id);
+        Product prod = null;
+Optional<Product> opt = productRepository.findById(id);
+if(opt.isPresent()){
+    prod=opt.get();
+}
     return prod;
     }
 
     @Override
-    @Transactional
+
     public void deleteProduct(Long id) {
-productRepository.deleteProduct(id);
+productRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Product> getProductsByName(String name) {
+       return productRepository.findProductsByNameAndLanguageMapNotNull(name);
+
+    }
+
+    @Override
+    public List<Product> getAllProductWithLanguageAndCurrency() {
+        return productRepository.findProductsByLanguageMapIsNotNull();
+    }
+
+    @Override
+    public Product getProductsById(Long id) {
+        return productRepository.findByIdAndLanguageMapIsNotNull(id);
     }
 
 
