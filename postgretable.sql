@@ -1,3 +1,7 @@
+
+DROP TABLE IF EXISTS languagemap, products;
+DROP SEQUENCE IF EXISTS JPA_SEQUENCE;
+
 CREATE TABLE languagemap (
 	language_id bigserial primary key,
     currency varchar(50),
@@ -5,7 +9,7 @@ CREATE TABLE languagemap (
 	);
 
 CREATE TABLE products (
-	product_id bigserial primary key,
+	product_id integer primary key,
     product_name varchar(50) NOT NULL,
     description varchar(250),
 	price numeric(10,2),
@@ -16,6 +20,7 @@ CREATE TABLE products (
 	FOREIGN KEY (language_id)
 	REFERENCES languagemap (language_id)
 );
+CREATE SEQUENCE JPA_SEQUENCE START WITH 13 INCREMENT BY 1;
 
 insert into languagemap values(1, 'RUB', 'RU');
 insert into languagemap values(2, 'USD', 'EN');

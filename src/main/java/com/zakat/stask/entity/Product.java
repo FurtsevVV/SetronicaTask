@@ -11,7 +11,8 @@ import javax.validation.constraints.Pattern;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator( name = "jpaSequence", sequenceName = "JPA_SEQUENCE", allocationSize = 1, initialValue = 1 )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jpaSequence")
     @Column(name = "product_id")
     private Long id;
     @Column(name = "product_name")
@@ -90,5 +91,19 @@ public class Product {
 
     public void setDateOfModification(String dateOfModification) {
         this.dateOfModification = dateOfModification;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", dateOfCreation='" + dateOfCreation + '\'' +
+                ", dateOfModification='" + dateOfModification + '\'' +
+                ", languageMap=" + languageMap +
+                '}';
     }
 }

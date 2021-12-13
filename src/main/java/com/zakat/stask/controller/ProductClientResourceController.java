@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -47,8 +48,9 @@ public class ProductClientResourceController {
 
     //return all products except products without defined language and currency with pagination
     @GetMapping("/")
-    public Page<Product> getAllProduct(@PageableDefault(sort = {"id"}, direction = Sort.Direction.ASC) Pageable pageable) {
-        pageable = PageRequest.of(0, 4);
+    public Page<Product> getAllProduct(@PageableDefault(sort = {"id"}, direction = Sort.Direction.ASC) Pageable pageable, PagedResourcesAssembler assembler) {
+        pageable = PageRequest.of(0, 10);
+
         Page<Product> productList = productService.getAllProductWithLanguageAndCurrency(pageable);
         return productList;
     }

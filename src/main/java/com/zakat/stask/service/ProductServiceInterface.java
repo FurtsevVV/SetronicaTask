@@ -1,6 +1,7 @@
 package com.zakat.stask.service;
 
 import com.zakat.stask.entity.Product;
+import com.zakat.stask.model.ProductModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -10,7 +11,7 @@ public interface ProductServiceInterface {
 
     public List<Product> getAllProduct();
 
-    public void saveProduct(Product product);
+    public String saveProduct(ProductModel product);
 
     public Product getProduct(Long id);
 

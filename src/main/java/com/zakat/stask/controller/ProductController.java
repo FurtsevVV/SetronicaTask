@@ -1,6 +1,7 @@
 package com.zakat.stask.controller;
 
 import com.zakat.stask.entity.Product;
+import com.zakat.stask.model.ProductModel;
 import com.zakat.stask.service.ProductService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,25 +37,32 @@ public class ProductController {
         return new ResponseEntity<Product>(product, status);
     }
 
-    //save to database new product with validation field name, price,
+    //save to database new ProductModel with validation field name, price,
     // dateOfCreation(pattern), dateOfModification(pattern)
+    //string field Language checked in ProductService with map from
+    //table 'languagemap'. If language value exist - save new object
+    //if value wrong - save new object with value Language/Currency = null
     @PostMapping("/products")
-    public ResponseEntity addNewProduct(@Valid @RequestBody Product product, BindingResult bindingResult) {
+    public ResponseEntity addNewProduct(@Valid @RequestBody ProductModel product, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body("Ошибка валидации");
         }
-        productService.saveProduct(product);
-        return ResponseEntity.ok("New product saved");
+       String message = productService.saveProduct(product);
+        return ResponseEntity.ok(message);
     }
 
-    //update existing entity with validation
+    //update existing ProductModel(!) with validation
+    //string field Language checked in ProductService with map from
+    //table 'languagemap'. If language value exist - save new object
+    //if value wrong - save new object with value Language/Currency = null
     @PutMapping("/products")
-    public ResponseEntity updateProduct(@Valid @RequestBody Product product, BindingResult bindingResult) {
+    public ResponseEntity updateProduct(@Valid @RequestBody ProductModel product, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body("Ошибка валидации");
         }
-        productService.saveProduct(product);
-        return ResponseEntity.ok("Product update");
+        System.out.printf(product.toString());
+       String message = productService.saveProduct(product);
+        return ResponseEntity.ok(message);
     }
 
     //delete entity by id
